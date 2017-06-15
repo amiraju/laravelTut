@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
   public function index(){
-    return "Welcome from controller!!!";
+    $data=array('page_name'=>'Profile page',
+    'contents'=>'lot of content goes here');
+
+    return view('profile',compact('data'));
   }
 
   public function show($id){

@@ -19,9 +19,9 @@ Route::get('/welcome/{id}/{name}',function($id,$name){
     return "Welcome Again!!!".$id.$name;
 });
 
-// Route::get('/welcome','HomeController@index');
+ Route::get('/profile','HomeController@index');
 // Route::get('/welcome/{id}','HomeController@show');
 // Route::get('/welcome/edit','HomeController@edit');
 // Route::get('/welcome/delete','HomeController@destory');
 
-Route::resource('/welcome','HomeController');
+//Route::resource('/welcome','HomeController');
