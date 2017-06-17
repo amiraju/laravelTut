@@ -10,7 +10,9 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+//***********************Day3*******************
 
+//***********************Day3*******************
 Route::get('/home/index',['as'=>'home.index', function () {
     $url=route('home.index');
     return "This is project Root!!! The url is :".$url;
