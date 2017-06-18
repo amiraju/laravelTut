@@ -11,7 +11,10 @@
 |
 */
 //***********************Day3*******************
-
+Route::get('post','PostController@index');
+Route::get('post/insert','PostController@store');
+Route::get('post/update/{id}','PostController@update');
+Route::get('post/delete/{id}','PostController@destroy');
 //***********************Day3*******************
 Route::get('/home/index',['as'=>'home.index', function () {
     $url=route('home.index');
