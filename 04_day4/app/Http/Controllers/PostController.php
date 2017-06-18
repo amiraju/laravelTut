@@ -14,8 +14,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $select=DB::select('select *from posts');
-        return $select;
+        //day4 start
+        // $result=DB::table('posts')->select('title','content')->get();
+        // return $result;
+        $result=DB::table('orders')
+        ->join('orderdetails','orders.orderNumber','=','orderdetails.orderNumber')
+        ->select('orders.orderNumber','orders.orderDate','orders.status',
+        'orderdetails.quantityOrdered','orderdetails.priceEach')->get();
+        return $result;
+        // $select=DB::select('select *from posts');
+        // return $select;
     }
 
     /**
@@ -36,9 +44,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-      $data=['Laravel 5.3','Lot of new features','sajid'];
-      DB::insert('insert into posts (title,content,writer)
-                    values(?,?,?)',$data);
+      //day4 start
+      DB::table('posts')->insert([['title'=>'Lumen',
+      'content'=>'Lumen is light weight version of Laravel','writer'=>'abc'],
+      ['title'=>'symphony',
+      'content'=>'symphony is Boss','writer'=>'abc'],
+      ['title'=>'ZF',
+      'content'=>'ZF Sucks','writer'=>'abc']]);
+      // $data=['Laravel 5.3','Lot of new features','sajid'];
+      // DB::insert('insert into posts (title,content,writer)
+      //               values(?,?,?)',$data);
         //return $inserted;
     }
 
@@ -50,7 +65,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+      $result=DB::table('posts')->where('id',$id)->first();
+      return response()->json($result);
     }
 
     /**
@@ -73,8 +89,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updated=DB::update('update posts set title="laravel 5.4" where id=?',[$id]);
-        return $updated;
+        // $updated=DB::update('update posts set title="laravel 5.4" where id=?',[$id]);
+        // return $updated;
+        $updated=DB::table('posts')->where('id',$id)->update(['title'=>'Phalcon',
+                                    'content'=>'Phalcon is the future']);
+                                    return $updated;
     }
 
     /**
@@ -85,7 +104,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-      $deleted=DB::delete('delete from posts where id=?',[$id]);
-      return $deleted;
+      // $deleted=DB::delete('delete from posts where id=?',[$id]);
+      // return $deleted;
     }
 }
