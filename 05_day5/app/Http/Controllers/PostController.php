@@ -15,13 +15,16 @@ class PostController extends Controller
     public function index()
     {
         //day4 start
-        // $result=DB::table('posts')->select('title','content')->get();
+        DB::enableQueryLog();
+        $posts=DB::table('posts')->select('id','title','content')->get();
+        //dd(DB::getQueryLog());
+        return view('post.index',compact('posts'));
+
+        // $result=DB::table('orders')
+        // ->join('orderdetails','orders.orderNumber','=','orderdetails.orderNumber')
+        // ->select('orders.orderNumber','orders.orderDate','orders.status',
+        // 'orderdetails.quantityOrdered','orderdetails.priceEach')->get();
         // return $result;
-        $result=DB::table('orders')
-        ->join('orderdetails','orders.orderNumber','=','orderdetails.orderNumber')
-        ->select('orders.orderNumber','orders.orderDate','orders.status',
-        'orderdetails.quantityOrdered','orderdetails.priceEach')->get();
-        return $result;
         // $select=DB::select('select *from posts');
         // return $select;
     }
@@ -33,7 +36,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.create');
     }
 
     /**
@@ -45,16 +48,14 @@ class PostController extends Controller
     public function store(Request $request)
     {
       //day4 start
-      DB::table('posts')->insert([['title'=>'Lumen',
-      'content'=>'Lumen is light weight version of Laravel','writer'=>'abc'],
-      ['title'=>'symphony',
-      'content'=>'symphony is Boss','writer'=>'abc'],
-      ['title'=>'ZF',
-      'content'=>'ZF Sucks','writer'=>'abc']]);
+      //$data=$request->all();
+      //return $data;
+      DB::table('posts')
+      ->insert(['title'=>$request->title,'content'=>$request->content,'writer'=>'abc']);
       // $data=['Laravel 5.3','Lot of new features','sajid'];
       // DB::insert('insert into posts (title,content,writer)
       //               values(?,?,?)',$data);
-        //return $inserted;
+        return redirect('/post');;
     }
 
     /**
@@ -65,8 +66,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-      $result=DB::table('posts')->where('id',$id)->first();
-      return response()->json($result);
+      $post=DB::table('posts')->where('id',$id)->first();
+      return view('post.show',compact('post'));
     }
 
     /**
@@ -77,7 +78,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post=DB::table('posts')->where('id',$id)->first();
+        return view('post.edit',compact('post'));
     }
 
     /**
@@ -91,9 +93,10 @@ class PostController extends Controller
     {
         // $updated=DB::update('update posts set title="laravel 5.4" where id=?',[$id]);
         // return $updated;
-        $updated=DB::table('posts')->where('id',$id)->update(['title'=>'Phalcon',
-                                    'content'=>'Phalcon is the future']);
-                                    return $updated;
+        $data=$request->all();
+        DB::table('posts')->where('id',$id)
+        ->update(['title'=>$request->title,'content'=>$request->content]);
+        return redirect('/post');;
     }
 
     /**
@@ -106,5 +109,8 @@ class PostController extends Controller
     {
       // $deleted=DB::delete('delete from posts where id=?',[$id]);
       // return $deleted;
+      DB::table('posts')->where('id',$id)->delete();
+      return redirect('/post');
+
     }
 }
